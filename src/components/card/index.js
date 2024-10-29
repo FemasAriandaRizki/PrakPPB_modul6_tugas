@@ -2,8 +2,7 @@
 import React from "react";
 import "./index.css";
 
-const placeholderImage =
-    "https://github.com/FemasAriandaRizki/PrakPPB_modul6_tugas/blob/eabf8cf55d8880c8df732c786f133b701a5ce6f8/src/images/image%20-%20placeholder.jpg"; //
+const placeholderImage = "https://raw.githubusercontent.com/FemasAriandaRizki/PrakPPB_modul6_tugas/c9d7d0d7279c256cdfbcc0d342696144268d68a3/image%20-%20placeholder.jpg";
 
 export default function index({ data, onClick }) {
     return (
@@ -11,13 +10,9 @@ export default function index({ data, onClick }) {
             {data ? (
                 <>
                     <figure>
-                        <img
-                            src={
-                                data.i && data.i.imageUrl
-                                    ? data.i.imageUrl
-                                    : placeholderImage
-                            }
-                            alt={data.l || "No Title"}
+                        <img 
+                            src={data.i && data.i.imageUrl ? data.i.imageUrl : placeholderImage} 
+                            alt={data.l || "No Title"} 
                         />
                     </figure>
                     <div className="card-info">
