@@ -1,3 +1,4 @@
+// src/pages/LandingPage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -9,7 +10,9 @@ export default function LandingPage() {
     const [data, setData] = useState(null);
     const [isLoaded, setisLoaded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [query, setQuery] = useState("One Piece");
+    const [query, setQuery] = useState(
+        localStorage.getItem("lastQuery") || "One Piece"
+    );
 
     // Modal
     const [modalShow, setModalShow] = useState(false);
@@ -34,9 +37,18 @@ export default function LandingPage() {
                     setData(response.data);
                     setisLoaded(true);
                     setIsLoading(false);
+                    localStorage.setItem(
+                        "lastData",
+                        JSON.stringify(response.data)
+                    );
+                    localStorage.setItem("lastQuery", query);
                 }
             } catch (err) {
                 console.log(err);
+                const cachedData = localStorage.getItem("lastData");
+                if (cachedData) {
+                    setData(JSON.parse(cachedData));
+                }
                 setIsLoading(false);
             }
         };
@@ -44,16 +56,19 @@ export default function LandingPage() {
             fetchData(query);
         }
     }, [isLoaded, query]);
+
     const onSearch = (e) => {
         if (e.key === "Enter") {
             setisLoaded(false);
             setQuery(e.target.value);
         }
     };
+
     const handleClick = (item) => {
         setModalShow(!modalShow);
         setModalItem(item);
     };
+
     return (
         <main>
             <input
@@ -66,15 +81,13 @@ export default function LandingPage() {
                 <p>Loading...</p>
             ) : (
                 <div className="card-container">
-                    {data.d.map((item, index) => {
-                        return (
-                            <Card
-                                data={item}
-                                key={index}
-                                onClick={() => handleClick(item)}
-                            />
-                        );
-                    })}
+                    {data.d.map((item, index) => (
+                        <Card
+                            data={item}
+                            key={index}
+                            onClick={() => handleClick(item)}
+                        />
+                    ))}
                 </div>
             )}
             <Modal
