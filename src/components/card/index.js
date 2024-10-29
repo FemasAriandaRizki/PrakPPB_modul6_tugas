@@ -1,4 +1,3 @@
-// src\components\card\index.js
 import React from "react";
 import "./index.css";
 
